@@ -1,0 +1,13 @@
+﻿<Window x:Class="Deboli_AsyncServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Deboli_AsyncServer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="250" Width="250">
+    <Grid>
+        <Button x:Name="btn_Ascolta" Content="Metti in ascolta" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="222" Click="btn_Ascolta_Click"/>
+
+    </Grid>
+</Window>

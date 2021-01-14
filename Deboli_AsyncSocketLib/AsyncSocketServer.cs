@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
+using System.IO;
 
- 
 namespace Deboli_AsyncSocketLib
 {
     public class AsyncSocketServer
@@ -17,7 +17,7 @@ namespace Deboli_AsyncSocketLib
         TcpListener mServer;
 
         /// <summary>
-        /// Server inizia ad ascoltare
+        /// Metodo che permette al server di ascoltare
         /// </summary>
         /// <param name="ipaddress"></param>
         /// <param name="port"></param>
@@ -41,6 +41,41 @@ namespace Deboli_AsyncSocketLib
             TcpClient client = await mServer.AcceptTcpClientAsync();
 
             Debug.WriteLine("Client Connesso: " + client.Client.RemoteEndPoint);
+            RiceviMessaggio(client);
+        }
+
+        public async void RiceviMessaggio (TcpClient client)
+        {
+            NetworkStream stream = null; // Contenuto del file
+            StreamReader reader = null; // Legge e manipola i dati
+
+            try
+            {
+                stream = client.GetStream();
+                reader = new StreamReader(stream);
+                char[] buffer = new char[512];
+                int nBytes = 0; // N byte che ricevo
+
+                while (true)
+                {
+                    Debug.WriteLine("In attesa di un messaggio");
+
+                    // Ricezione messaggio asincrono
+                    nBytes = await reader.ReadAsync(buffer, 0, buffer.Length);
+
+                    if (nBytes == 0)
+                    {
+                        Debug.WriteLine("Client disconnesso");
+                        break;
+                    }
+                    string recvText = new string(buffer);
+                    Debug.WriteLine("N° byte: {0}. Messaggio: {1}", nBytes + recvText);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Errore " + ex.Message);
+            }
         }
     }
 }

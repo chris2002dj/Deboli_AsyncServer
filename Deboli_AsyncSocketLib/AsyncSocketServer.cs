@@ -88,5 +88,13 @@ namespace Deboli_AsyncSocketLib
                 Debug.WriteLine("Errore " + ex.Message);
             }
         }
+
+        private void RimuoviClient(TcpClient client)
+        {
+            if (mClients.Contains(client))
+            {
+                mClients.Remove(client);
+            }
+        }
     }
 }

@@ -15,6 +15,12 @@ namespace Deboli_AsyncSocketLib
         IPAddress mIP;
         int mPort;
         TcpListener mServer;
+        List<TcpClient> mClients;
+
+        public AsyncSocketServer()
+        {
+            mClients = new List<TcpClient>();
+        }
 
         /// <summary>
         /// Metodo che permette al server di ascoltare
@@ -38,10 +44,15 @@ namespace Deboli_AsyncSocketLib
             mServer.Start(); // Avvia il server
             
             Debug.WriteLine("Server avviato.");
-            TcpClient client = await mServer.AcceptTcpClientAsync();
+            
 
-            Debug.WriteLine("Client Connesso: " + client.Client.RemoteEndPoint);
-            RiceviMessaggio(client);
+            while (true)
+            {
+                TcpClient client = await mServer.AcceptTcpClientAsync();
+                mClients.Add(client);
+                Debug.WriteLine("Client connessi: {0}. Client Connesso {1}", mClients.Count, client.Client.RemoteEndPoint);
+                RiceviMessaggio(client);
+            }
         }
 
         public async void RiceviMessaggio (TcpClient client)
